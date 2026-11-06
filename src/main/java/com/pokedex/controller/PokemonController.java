@@ -1,21 +1,51 @@
 package com.pokedex.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.pokedex.model.Pokemon;
+import com.pokedex.service.PokemonService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pokemon")
+public class PokemonController {
 
-public class pokemonController {
-    @GetMapping("/oi/{nome}")
-    public String HelloWorld(@PathVariable String nome){
-        return "Hello " + nome;
+    private final PokemonService pokemonService;
+
+    public PokemonController(PokemonService pokemonService) {
+        this.pokemonService = pokemonService;
     }
+
+
 
     @GetMapping("/tchau")
     public String ByeWorld(){
-        return "Bye World";
+        return "Bye World!";
     }
+
+
+
+    @PostMapping("/add")
+    public String addPokemon(@RequestBody Pokemon pokemon){
+
+        return pokemonService.adicionarPokemon(pokemon);
+    }
+
+    @GetMapping("/lista")
+    public List<Pokemon> getLista(){
+        return pokemonService.getLista();
+    }
+
+
+    @PutMapping("/update/{nome}")
+    public String updatePokemon(@PathVariable String nome, @RequestBody Pokemon pokemon){
+        return pokemonService.updatePokemon(nome , pokemon);
+    }
+
+    @DeleteMapping("/deletar/{nome}")
+    public String deletePokemon(@PathVariable String nome, Pokemon pokemon){
+        return pokemonService.deletePokemon(nome , pokemon);
+    }
+
 }
